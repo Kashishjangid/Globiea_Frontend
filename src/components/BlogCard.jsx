@@ -3,12 +3,13 @@ import useStore from '../store.js';
 import useApi from '../hooks/useApi.js';
 import { Trash2, Edit } from 'lucide-react';
 
-const BlogCard = ({ blog, onEdit, onDelete }) => {
+const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // NEW: showHoverActions prop
   const { user } = useStore();
   const { request, loading } = useApi();
   const [isHovered, setIsHovered] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  // FIXED: Use user.id instead of user._id and handle null user safely
   const isAuthor = user && blog.author && (
     (blog.author._id === user.id) || 
     (blog.author === user.id) ||
@@ -16,31 +17,26 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
     (typeof blog.author === 'string' && blog.author === user.id)
   );
 
-  // console.log('Current User:', user);
-  // console.log('Blog Author:', blog.author);
-  // console.log('Is Author:', isAuthor);
-
- const handleDelete = async () => {
+  const handleDelete = async () => {
     if (!user || !isAuthor) return;
 
     try {
-        console.log('Attempting to delete blog:', blog._id);
-        
-        await request('DELETE', `/blogs/${blog._id}`);
-        onDelete(); 
-        setShowConfirm(false);
+      await request('DELETE', `/blogs/${blog._id}`);
+      onDelete(); // Notify App to re-fetch
+      setShowConfirm(false);
     } catch (err) {
-        console.error("Failed to delete blog:", err);
+      console.error("Failed to delete blog:", err);
     }
-};
-
+  };
+  
+  // Utility to format date string
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric', month: 'short', day: 'numeric'
     });
   };
 
-
+  // Utility to get author email/name for display
   const getAuthorDisplay = () => {
     if (typeof blog.author === 'object' && blog.author.email) {
       return blog.author.email;
@@ -56,11 +52,11 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
   return (
     <div 
       className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border border-gray-100 relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => showHoverActions && setIsHovered(true)} // Only set hover if showHoverActions is true
+      onMouseLeave={() => showHoverActions && setIsHovered(false)} // Only set hover if showHoverActions is true
     >
-
-      {isAuthor && isHovered && (
+      {/* Action Buttons Overlay - Only show if showHoverActions is true and user is author */}
+      {showHoverActions && isAuthor && isHovered && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-70 flex justify-center items-center z-10 transition-opacity duration-300 rounded-xl">
           {!showConfirm ? (
             <div className="flex space-x-4">
@@ -103,9 +99,10 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
         </div>
       )}
 
+      {/* Blog Content */}
       {blog.blogImage && (
         <img 
-          src={`https://globiea-backend.onrender.com${blog.blogImage}`} 
+          src={`http://localhost:3000${blog.blogImage}`} 
           alt={blog.title} 
           className="w-full h-48 object-cover"
           onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/CCCCCC/333333?text=Image+Missing"; }}
