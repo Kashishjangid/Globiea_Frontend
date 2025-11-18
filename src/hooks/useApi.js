@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import useStore from '../store.js';
 
-const API_BASE_URL = 'https://globiea-backend.onrender.com/api'; 
+const API_BASE_URL = 'https://globiea-backend-1.onrender.com/api'; 
 
 const useApi = () => {
   const [loading, setLoading] = useState(false);
