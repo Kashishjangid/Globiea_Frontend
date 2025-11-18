@@ -19,15 +19,13 @@ const EditBlog = ({ blog, onCancel, onSuccess }) => {
     formData.append('title', title);
     formData.append('content', content);
     
-    // Only append image if a new one is selected
     if (imageFile) {
       formData.append('blogImage', imageFile); 
     }
 
     try {
-      // PUT request to update the specific blog ID
       await request('PUT', `/blogs/${blog._id}`, formData, null);
-      onSuccess(); // Close form and refresh list
+      onSuccess();
       console.log('Blog updated successfully!'); 
     } catch (err) {
       console.error("Blog update failed.", err);

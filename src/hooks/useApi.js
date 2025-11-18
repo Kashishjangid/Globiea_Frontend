@@ -1,14 +1,13 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import useStore from '../store.js'; // Ensure .js is here
+import useStore from '../store.js';
 
-const API_BASE_URL = 'http://localhost:3000/api'; 
+const API_BASE_URL = 'https://globiea-backend.onrender.com/api'; 
 
 const useApi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
-  // Get the store instance, which is stable across renders
   const store = useStore(); 
 
 const request = useCallback(async (method, url, data = null, onSuccess = null) => {
@@ -20,7 +19,6 @@ const request = useCallback(async (method, url, data = null, onSuccess = null) =
     
     let headers = {};
     
-    // Always include auth token if available
     if (currentToken) {
       headers['x-auth-token'] = currentToken;
     }
@@ -31,10 +29,9 @@ const request = useCallback(async (method, url, data = null, onSuccess = null) =
       headers,
     };
 
-    // Only include data for methods that typically have a body
-    // DELETE requests usually don't have a body
+
     if (data && method !== 'DELETE' && method !== 'GET') {
-      // For FormData, let axios set the Content-Type automatically
+      
       if (data instanceof FormData) {
         config.data = data;
       } else {

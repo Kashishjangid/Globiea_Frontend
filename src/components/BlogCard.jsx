@@ -9,7 +9,6 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // FIXED: Use user.id instead of user._id and handle null user safely
   const isAuthor = user && blog.author && (
     (blog.author._id === user.id) || 
     (blog.author === user.id) ||
@@ -17,7 +16,6 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
     (typeof blog.author === 'string' && blog.author === user.id)
   );
 
-  // Safe debug logs
   // console.log('Current User:', user);
   // console.log('Blog Author:', blog.author);
   // console.log('Is Author:', isAuthor);
@@ -28,22 +26,21 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
     try {
         console.log('Attempting to delete blog:', blog._id);
         
-        // FIX: Don't pass null as data for DELETE requests
         await request('DELETE', `/blogs/${blog._id}`);
-        onDelete(); // Notify App to re-fetch
+        onDelete(); 
         setShowConfirm(false);
     } catch (err) {
         console.error("Failed to delete blog:", err);
     }
 };
-  // Utility to format date string
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric', month: 'short', day: 'numeric'
     });
   };
 
-  // Utility to get author email/name for display
+
   const getAuthorDisplay = () => {
     if (typeof blog.author === 'object' && blog.author.email) {
       return blog.author.email;
@@ -62,7 +59,7 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Action Buttons Overlay */}
+
       {isAuthor && isHovered && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-70 flex justify-center items-center z-10 transition-opacity duration-300 rounded-xl">
           {!showConfirm ? (
@@ -106,10 +103,9 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
         </div>
       )}
 
-      {/* Blog Content */}
       {blog.blogImage && (
         <img 
-          src={`http://localhost:3000${blog.blogImage}`} 
+          src={`https://globiea-backend.onrender.com${blog.blogImage}`} 
           alt={blog.title} 
           className="w-full h-48 object-cover"
           onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/CCCCCC/333333?text=Image+Missing"; }}

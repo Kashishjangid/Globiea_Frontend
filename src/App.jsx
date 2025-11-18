@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './index.css'
 
-// Custom Hooks and State
 import useStore from './store.js'; 
 import useApi from './hooks/useApi.js';   
 
-// Components
 import CreateBlog from './components/CreateBlog';
 import BlogCard from './components/BlogCard'; 
 import AIAgent from './components/AIAgent';
@@ -13,7 +11,6 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import EditBlog from './components/EditBlog'; 
 
-// Define view constants
 const VIEW_ALL = 'all';
 const VIEW_MY_BLOGS = 'my';
 
@@ -24,9 +21,8 @@ function App() {
   const [isLoginView, setIsLoginView] = useState(true);
   const [currentView, setCurrentView] = useState(VIEW_ALL);
   const [editingBlog, setEditingBlog] = useState(null);
-  const [myBlogs, setMyBlogs] = useState([]); // Separate state for user's blogs
+  const [myBlogs, setMyBlogs] = useState([]); 
 
-  // FIXED: Separate fetch functions for different views
   const fetchAllBlogs = useCallback(async () => {
     try {
       await request('GET', '/blogs', null, setBlogs);
@@ -45,9 +41,6 @@ function App() {
     }
   }, [request, user, setMyBlogs]);
 
-  
-
-  // Effect to fetch blogs based on current view
   useEffect(() => {
     if (currentView === VIEW_ALL) {
       fetchAllBlogs();
@@ -56,17 +49,14 @@ function App() {
     }
   }, [currentView, user, fetchAllBlogs, fetchMyBlogs]);
 
-  // Effect to fetch all blogs on initial load
   useEffect(() => {
     fetchAllBlogs();
   }, [fetchAllBlogs]);
 
-  // Helper to switch back to login view after successful signup
   const handleSignupSuccess = () => {
     setIsLoginView(true);
   };
   
-  // Handlers for BlogCard
   const handleEditClick = (blog) => {
     setEditingBlog(blog);
     setCurrentView(VIEW_MY_BLOGS);
@@ -76,22 +66,18 @@ function App() {
     setEditingBlog(null);
   };
 
-  // Re-fetch blogs after a successful edit/delete/create
   const handleActionSuccess = () => {
     setEditingBlog(null);
     if (currentView === VIEW_ALL) {
       fetchAllBlogs();
     } else if (currentView === VIEW_MY_BLOGS) {
       fetchMyBlogs();
-      // Also refresh all blogs to keep everything in sync
       fetchAllBlogs();
     }
   };
 
-  // Determine which blogs to display based on current view
   const displayedBlogs = currentView === VIEW_MY_BLOGS ? myBlogs : blogs;
 
-  // Calculate my blogs count from the actual myBlogs state, not filtered blogs
   const myBlogsCount = myBlogs.length;
 
   return (
@@ -114,7 +100,6 @@ function App() {
 
       <main className="max-w-6xl mx-auto px-4">
         
-        {/* Top Section: Auth/Create Blog & AI Agent */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
           
           <div className="lg:col-span-1">
@@ -162,7 +147,6 @@ function App() {
           </div>
         </div>
         
-        {/* Blog View Toggle and Title */}
         <div className="flex justify-between items-center mb-6 border-b pb-2">
             <h2 className="text-3xl font-bold text-gray-800">
                 {currentView === VIEW_ALL ? 'All Blog Posts' : 'My Posts'}
@@ -185,7 +169,6 @@ function App() {
             </div>
         </div>
 
-        {/* Blog Feed */}
         {loading && <p className="text-center text-xl text-indigo-500 py-6">Loading blogs...</p>}
         {error && <p className="text-center text-red-500 font-semibold py-6">Error fetching posts: {error}</p>}
         

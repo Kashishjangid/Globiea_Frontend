@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BlogCard = ({ blog }) => {
-  const imageBaseUrl = 'http://localhost:3000'; 
+  const imageBaseUrl = 'https://globiea-backend.onrender.com'; 
   
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-indigo-400">
