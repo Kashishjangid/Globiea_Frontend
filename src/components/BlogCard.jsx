@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import useStore from '../store.js';
 import useApi from '../hooks/useApi.js';
 import { Trash2, Edit } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // NEW: showHoverActions prop
+  
+  const navigate = useNavigate();
+
   const { user } = useStore();
   const { request, loading } = useApi();
   const [isHovered, setIsHovered] = useState(false);
@@ -38,7 +42,20 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
 
   // Utility to get author email/name for display
   const getAuthorDisplay = () => {
-   return blog.author.username;
+    console.log('Blog Author Data:', blog.author.username);
+    // if (typeof blog.author.username === 'object' && blog.author.username) {
+      return blog.author.username;
+    // } else if (typeof blog.author === 'object' && blog.author.email) {
+      // return blog.author.email;
+    // } else if (user && isAuthor) {
+      // return user.email || 'You';
+    // } else {
+      // return 'Unknown User';
+    // }
+  };
+
+    const handleCardClick = () => {
+    navigate(`/blog/${blog._id}`);
   };
 
   return (
@@ -46,6 +63,7 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
       className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border border-gray-100 relative"
       onMouseEnter={() => showHoverActions && setIsHovered(true)} // Only set hover if showHoverActions is true
       onMouseLeave={() => showHoverActions && setIsHovered(false)} // Only set hover if showHoverActions is true
+      onClick={handleCardClick}
     >
       {/* Action Buttons Overlay - Only show if showHoverActions is true and user is author */}
       {showHoverActions && isAuthor && isHovered && (
@@ -94,7 +112,7 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
       {/* Blog Content */}
       {blog.blogImage && (
         <img 
-          src={`https://globiea-backend.onrender.com${blog.blogImage}`} 
+          src={`http://localhost:3000${blog.blogImage}`} 
           alt={blog.title} 
           className="w-full h-48 object-cover"
           onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/CCCCCC/333333?text=Image+Missing"; }}
