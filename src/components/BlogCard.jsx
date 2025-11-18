@@ -54,8 +54,10 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
     // }
   };
 
-    const handleCardClick = () => {
-    navigate(`/blog/${blog._id}`);
+  const handleCardClick = () => {
+    if (!showHoverActions || !isHovered) {
+      navigate(/blog/${blog._id});
+    }
   };
 
   return (
