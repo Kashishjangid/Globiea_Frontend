@@ -70,6 +70,11 @@ function App() {
   const handleEditClick = (blog) => {
     setEditingBlog(blog);
     setCurrentView(VIEW_MY_BLOGS);
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   };
 
   const handleEditCancel = () => {
