@@ -60,7 +60,7 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
 
   return (
     <div 
-      className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border border-gray-100 relative"
+      className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border border-gray-100 relative cursor-pointer"
       onMouseEnter={() => showHoverActions && setIsHovered(true)} // Only set hover if showHoverActions is true
       onMouseLeave={() => showHoverActions && setIsHovered(false)} // Only set hover if showHoverActions is true
       onClick={handleCardClick}
