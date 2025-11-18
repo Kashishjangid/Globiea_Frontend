@@ -39,9 +39,9 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
   // Utility to get author email/name for display
   const getAuthorDisplay = () => {
     if (typeof blog.author === 'object' && blog.author.username) {
-      return blog.author.email;
-    } else if (typeof blog.author === 'object' && blog.author.email) {
       return blog.author.username;
+    } else if (typeof blog.author === 'object' && blog.author.email) {
+      return blog.author.email;
     } else if (user && isAuthor) {
       return user.email || 'You';
     } else {
