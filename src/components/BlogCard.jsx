@@ -114,7 +114,7 @@ const BlogCard = ({ blog, onEdit, onDelete, showHoverActions = true }) => { // N
       {/* Blog Content */}
       {blog.blogImage && (
         <img 
-          src={`http://localhost:3000${blog.blogImage}`} 
+          src={`https://globiea-backend-1.onrender.com${blog.blogImage}`} 
           alt={blog.title} 
           className="w-full h-48 object-cover"
           onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/CCCCCC/333333?text=Image+Missing"; }}
