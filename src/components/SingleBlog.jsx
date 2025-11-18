@@ -82,7 +82,7 @@ const SingleBlog = () => {
           {/* Blog Image */}
           {blog.blogImage && (
             <img 
-              src={`http://localhost:3000${blog.blogImage}`} 
+              src={`https://globiea-backend-1.onrender.com${blog.blogImage}`} 
               alt={blog.title} 
               className="w-full h-96 object-cover"
               onError={(e) => { 
