@@ -106,7 +106,7 @@ function App() {
           <h1 className="text-3xl font-black text-indigo-700">MiniBlog 📝</h1>
           {user ? (
             <div className="flex items-center gap-4">
-              <span className="text-gray-600 font-medium">Welcome, {user.email}</span> 
+              <span className="text-gray-600 font-medium">Welcome, {user.username}</span> 
               <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Logout</button>
             </div>
           ) : (
